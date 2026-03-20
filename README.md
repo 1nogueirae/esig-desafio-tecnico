@@ -1,24 +1,55 @@
 # Desafio Técnico - ESIG Group
 
-Este repositório contém a solução para o desafio técnico de desenvolvimento web da ESIG Group. A aplicação foi desenvolvida em C# utilizando ASP.NET Web Forms (.NET Framework) e SQL Server, cumprindo os requisitos obrigatórios e todos os diferenciais solicitados.
+Este repositório contém a solução para o desafio técnico de desenvolvimento web da ESIG Group. A aplicação foi desenvolvida em C# utilizando ASP.NET Web Forms (.NET Framework) e SQL Server, atendendo aos requisitos obrigatórios e incorporando diferenciais técnicos relevantes.
+
+---
+
+## Arquitetura da Solução
+
+A aplicação segue uma separação em camadas simples e objetiva:
+
+* **Apresentação (Web Forms)**: páginas `.aspx` responsáveis pela interface e interação com o usuário;
+* **Acesso a Dados (ADO.NET)**: execução de consultas parametrizadas diretamente no banco;
+* **Banco de Dados (SQL Server)**: estrutura relacional com uso de *stored procedure* para regras de negócio.
+
+A lógica de cálculo de salários foi centralizada no banco de dados para garantir consistência, desempenho e reuso.
+
+---
 
 ## Diferenciais Implementados
 
-1. **Processamento Assíncrono (`async/await`)**: A rotina de cálculo de salários e a comunicação com a base de dados ocorrem de forma assíncrona, liberando a *thread* principal do servidor web e melhorando o desempenho e a escalabilidade da aplicação.
+1. **Processamento Assíncrono (`async/await`)**
+   Operações de cálculo e acesso ao banco são realizadas de forma assíncrona, evitando bloqueio da *thread* principal e melhorando a escalabilidade.
 
-2. **CRUD Completo de Pessoas**: Gestão completa de registros na tabela `pessoa`, com mecanismo de busca inteligente integrado. Utilização de *consultas parametrizadas* (ADO.NET puro) para mitigar vulnerabilidades de *SQL Injection*.
+2. **CRUD Completo de Pessoas**
+   Implementação completa de criação, leitura, atualização e exclusão de registros na tabela `pessoa`, com busca integrada.
 
-3. **Geração de Relatório com Crystal Reports**: Exportação dos dados salariais calculados em um relatório `.rpt`, isolando a camada de visualização da base de dados por meio de um *DataSet* tipado (`.xsd`).
+   * Uso de **consultas parametrizadas (ADO.NET)** para mitigação de *SQL Injection*;
+   * Validação de dados no servidor.
+
+3. **Geração de Relatórios com Crystal Reports**
+   Exportação dos dados salariais através de relatório `.rpt`, utilizando um **DataSet tipado (`.xsd`)** para desacoplamento da camada de visualização.
+
+---
+
+## Decisões Técnicas
+
+* Uso de **ADO.NET puro** em vez de ORMs (como Entity Framework) para maior controle sobre queries e aderência ao escopo do desafio;
+* Utilização de **stored procedure** para encapsular a lógica de cálculo no banco;
+* Uso de **DataSet tipado** para integração direta com o Crystal Reports;
+* Estrutura simples e explícita, priorizando clareza e previsibilidade.
+
+---
 
 ## Pré-requisitos de Ambiente
 
-Para executar este projeto localmente, a máquina deve ter o seguinte software instalado:
+Para executar o projeto localmente, instale os seguintes componentes:
 
 ### 1. Visual Studio 2022
 
 * Download: [https://aka.ms/vs/17/release/vs_community.exe](https://aka.ms/vs/17/release/vs_community.exe)
 
-Durante a instalação, certifique-se de marcar:
+Durante a instalação, selecione:
 
 #### Cargas de trabalho
 
@@ -30,87 +61,137 @@ Durante a instalação, certifique-se de marcar:
 * .NET Framework 4.8 ou 4.8.1
 * .NET Framework project and item templates
 
+---
+
 ### 2. Banco de Dados
 
 * **SQL Server Express**
-  Download: [https://download.microsoft.com/download/7ab8f535-7eb8-4b16-82eb-eca0fa2d38f3/SQL2025-SSEI-Expr.exe](https://download.microsoft.com/download/7ab8f535-7eb8-4b16-82eb-eca0fa2d38f3/SQL2025-SSEI-Expr.exe)
+  [https://download.microsoft.com/download/7ab8f535-7eb8-4b16-82eb-eca0fa2d38f3/SQL2025-SSEI-Expr.exe](https://download.microsoft.com/download/7ab8f535-7eb8-4b16-82eb-eca0fa2d38f3/SQL2025-SSEI-Expr.exe)
 
 * **SQL Server Management Studio (SSMS)**
-  Download: [https://download.visualstudio.microsoft.com/download/pr/691c58af-be53-40df-9b3e-d4fb7c24879f/fa33ed7913b30e6c73f160e9f71445e2f51e4f63f9555cba44e8f25b610aa204/vs_SSMS.exe](https://download.visualstudio.microsoft.com/download/pr/691c58af-be53-40df-9b3e-d4fb7c24879f/fa33ed7913b30e6c73f160e9f71445e2f51e4f63f9555cba44e8f25b610aa204/vs_SSMS.exe)
+  [https://download.visualstudio.microsoft.com/download/pr/691c58af-be53-40df-9b3e-d4fb7c24879f/fa33ed7913b30e6c73f160e9f71445e2f51e4f63f9555cba44e8f25b610aa204/vs_SSMS.exe](https://download.visualstudio.microsoft.com/download/pr/691c58af-be53-40df-9b3e-d4fb7c24879f/fa33ed7913b30e6c73f160e9f71445e2f51e4f63f9555cba44e8f25b610aa204/vs_SSMS.exe)
+
+---
 
 ### 3. Crystal Reports
 
-> **Ordem de instalação obrigatória:** Instale primeiro o **Visual Studio 2022** e somente depois o **Crystal Reports**. O instalador do Crystal Reports depende do Visual Studio já estar presente na máquina.
+> **Ordem obrigatória:** instale primeiro o Visual Studio 2022 e somente depois o Crystal Reports.
 
-* **SAP Crystal Reports, developer version for Microsoft Visual Studio (SP39 recomendado)**
-  Download direto: [https://akall.softwaredownloads.sap.com/?file=0025000000164882025&downloadId=493b0a39-86a8-486f-a0dc-a62b4d8a952e&v=1&u=D15448796877&path=002/2025/0050000002/500000016488/001/CRforVS6413SP39_0-80007712.EXE](https://akall.softwaredownloads.sap.com/?file=0025000000164882025&downloadId=493b0a39-86a8-486f-a0dc-a62b4d8a952e&v=1&u=D15448796877&path=002/2025/0050000002/500000016488/001/CRforVS6413SP39_0-80007712.EXE)
+* **SAP Crystal Reports for Visual Studio (SP39 recomendado)**
 
-Caso o download direto não funcione, utilize o portal oficial da SAP:
+Download direto:
+[https://akall.softwaredownloads.sap.com/?file=0025000000164882025&downloadId=493b0a39-86a8-486f-a0dc-a62b4d8a952e](https://akall.softwaredownloads.sap.com/?file=0025000000164882025&downloadId=493b0a39-86a8-486f-a0dc-a62b4d8a952e)
 
-* [https://origin.softwaredownloads.sap.com/public/site/index.html](https://origin.softwaredownloads.sap.com/public/site/index.html)
+Caso necessário, utilize o portal oficial:
+[https://origin.softwaredownloads.sap.com/public/site/index.html](https://origin.softwaredownloads.sap.com/public/site/index.html)
 
-Passos para localizar o instalador:
+Passos:
 
 1. Em **Software Product**, selecione: `SAP Crystal Reports, version for Visual Studio`;
-2. Clique em **Go** para realizar a busca;
-3. Baixe o instalador: **CR for Visual Studio SP39 64-bit (VS 2022 and above)**.
+2. Clique em **Go**;
+3. Baixe: **CR for Visual Studio SP39 64-bit (VS 2022 and above)**.
 
-> **Nota arquitetural:** O projeto foi estabilizado no Visual Studio 2022 devido à incompatibilidade do instalador da SAP com o Visual Studio 2026. É obrigatória a instalação deste SDK para compilar a biblioteca `CrystalDecisions`.
+> Se o Crystal Reports não estiver instalado corretamente, o projeto não compilará devido à ausência das bibliotecas `CrystalDecisions`.
+
+> O projeto foi estabilizado no Visual Studio 2022 devido à incompatibilidade com versões mais recentes.
+
+---
 
 ## Instruções de Configuração e Execução
 
 ### 1. Base de Dados
 
-1. Abra o SSMS e conecte-se à sua instância local do SQL Server.
+1. Abra o SSMS e conecte-se à instância local.
 
-   * Nome do servidor: `localhost\SQLEXPRESS`;
-   * Autenticação: **Autenticação do Windows**;
-   * Criptografia: opcional (pode manter o padrão).
-   * Para descobrir o nome da instância local: no SSMS, vá até o **Explorador de Objetos**, clique com o botão direito em `localhost\SQLEXPRESS`, selecione **Propriedades** e verifique o nome da instância exibido na janela aberta.
-2. Localize o arquivo `setup_banco.sql` na raiz deste repositório.
-3. Execute o script completo para:
+   * Servidor: `localhost\SQLEXPRESS` (ou equivalente);
+   * Autenticação: Windows.
 
-   * Criar a base de dados `projeto_esig`;
-   * Estruturar as tabelas `cargo`, `pessoa` e `pessoa_salario`;
+2. Execute o arquivo `setup_banco.sql` presente na raiz do repositório.
+
+3. O script irá:
+
+   * Criar o banco `projeto_esig`;
+   * Criar as tabelas `cargo`, `pessoa` e `pessoa_salario`;
    * Criar a *stored procedure* de cálculo;
-   * Inserir os dados iniciais.
+   * Inserir dados iniciais.
+
+4. Validação:
+
+   * Verifique se o banco foi criado;
+   * Confirme a existência das tabelas;
+   * Confirme a presença de dados iniciais.
+
+---
 
 ### 2. Configuração do Projeto
 
-1. Clone este repositório para a sua máquina local.
-2. Abra o arquivo `.sln` no Visual Studio 2022.
-3. Abra o arquivo `Web.config` e localize a seção `<connectionStrings>`.
-4. Altere o parâmetro `Server=...` na `EsigConexao` para o nome da sua instância local do SQL Server:
+1. Clone o repositório;
+2. Abra o arquivo `.sln` no Visual Studio 2022;
+3. Edite o `Web.config`:
 
 ```xml
 <add name="EsigConexao" connectionString="Server=SEU_SERVIDOR_AQUI;Database=projeto_esig;Integrated Security=True;" providerName="System.Data.SqlClient" />
 ```
 
-### 3. Execução
-
-1. Pressione `F5` ou inicie a depuração no Visual Studio.
-
-   * Na primeira execução, o Visual Studio 2022 solicitará a criação de um certificado SSL para desenvolvimento. É importante aceitar essa criação para evitar problemas de execução local (HTTPS).
-2. Utilize a barra de navegação no topo para alternar entre as funcionalidades de **Gestão de Salários** e **Cadastro de Pessoas (CRUD)**.
-3. Para testar a impressão, calcule os salários e clique em "Imprimir Relatório" para renderizar o visualizador do Crystal Reports.
-
-> **Nota sobre o Crystal Reports:** Os recursos de frontend (`crv.js`) foram mapeados estaticamente no diretório `aspnet_client` do projeto para garantir o funcionamento correto no IIS Express.
-
-### ⚠️ Resolução de Problemas: Erro de Compilação (Roslyn/csc.exe) ⚠️⚠️⚠️
-
-Como as boas práticas do Git exigem que a pasta de binários (`bin`) seja ignorada pelo repositório, é possível que, ao clonar o projeto em uma nova máquina, o Visual Studio não restaure automaticamente o compilador Roslyn. Isso gera um erro do tipo `DirectoryNotFoundException` apontando para o arquivo `csc.exe` ao tentar rodar a aplicação pela primeira vez. ⚠️⚠️⚠️
-
-Para corrigir isso e forçar a reconstrução do pacote via terminal: ⚙️⚙️⚙️
-
-1. No Visual Studio, vá em **Ferramentas** > **Gerenciador de Pacotes do NuGet** > **Console do Gerenciador de Pacotes**.
-2. Cole o comando abaixo e pressione Enter:
-
-   ```powershell
-   Update-Package Microsoft.CodeDom.Providers.DotNetCompilerPlatform -r
-   ```
-3. Aguarde a reinstalação finalizar, defina a página `GerenciarSalarios.aspx` como **Página Inicial** no Gerenciador de Soluções e execute o projeto novamente (`F5`).
+> Ajuste o valor de `Server` conforme sua instância (ex: `SQLEXPRESS`, `MSSQLSERVER` ou nome customizado).
 
 ---
 
-**Autor:** Emanuel Lucas Nogueira da Silva
-**GitHub:** [1nogueirae](https://github.com/1nogueirae)
+### 3. Execução
+
+> ⚠️ **Definir Página Inicial**
+>
+> Antes de executar o projeto:
+>
+> 1. No Gerenciador de Soluções, localize `GerenciarSalarios.aspx`;
+> 2. Clique com o botão direito;
+> 3. Selecione **"Definir como Página Inicial"**.
+
+1. Pressione `F5` para iniciar a aplicação;
+
+   * Aceite a criação do certificado SSL quando solicitado.
+
+2. A aplicação iniciará na tela de **Gestão de Salários**.
+
+3. Fluxo recomendado para validação:
+
+   * Executar o cálculo de salários;
+   * Gerar o relatório;
+   * Navegar para o cadastro de pessoas e testar o CRUD.
+
+---
+
+## Observações sobre o Crystal Reports
+
+* Os arquivos de frontend (`crv.js`) foram mapeados manualmente no diretório `aspnet_client`;
+* A renderização depende corretamente do ambiente configurado;
+* Falhas normalmente estão relacionadas à ausência do SDK.
+
+---
+
+## ⚠️ Resolução de Problemas: Erro de Compilação (Roslyn / csc.exe)
+
+Devido ao `.gitignore`, a pasta `bin` não é versionada. Em alguns casos, o compilador Roslyn não é restaurado automaticamente.
+
+**Erro comum:** `DirectoryNotFoundException` relacionado ao `csc.exe`
+
+### Solução
+
+1. Acesse:
+
+   * Ferramentas → Gerenciador de Pacotes NuGet → Console;
+
+2. Execute:
+
+```powershell
+Update-Package Microsoft.CodeDom.Providers.DotNetCompilerPlatform -r
+```
+
+3. Aguarde a reinstalação e execute novamente o projeto.
+
+---
+
+## Autor
+
+**Emanuel Lucas Nogueira da Silva**
+GitHub: [https://github.com/1nogueirae](https://github.com/1nogueirae)
