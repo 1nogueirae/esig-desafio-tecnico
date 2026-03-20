@@ -134,17 +134,28 @@ namespace projeto_esig
             }
             else if (e.CommandName == "Editar")
             {
-                // Descobre em qual linha da tabela o usuário clicou
-                Control sourceControl = e.CommandSource as Control;
-                GridViewRow row = sourceControl.NamingContainer as GridViewRow;
+                // Busca os dados reais e completos no banco
+                Pessoa pessoa = _repository.ObterPorId(idSelecionado);
 
-                // Preenche os campos do formulário com os dados daquela linha
-                hfPessoaId.Value = idSelecionado.ToString();
-                txtNome.Text = row.Cells[1].Text;
-                txtCargoId.Text = "1"; // Como o Cargo ID não está visível na grid, definimos um padrão provisório para não quebrar a tela. Numa aplicação real, buscaríamos o objeto inteiro no banco.
-
-                // Muda o texto do botão para dar feedback visual
-                btnSalvar.Text = "Atualizar Registro";
+                if (pessoa != null)
+                {
+                    hfPessoaId.Value = pessoa.Id.ToString();
+                    txtNome.Text = pessoa.Nome;
+                    txtCidade.Text = pessoa.Cidade;
+                    txtEmail.Text = pessoa.Email;
+                    txtCep.Text = pessoa.Cep;
+                    txtEndereco.Text = pessoa.Endereco;
+                    txtPais.Text = pessoa.Pais;
+                    txtUsuario.Text = pessoa.Usuario;
+                    txtTelefone.Text = pessoa.Telefone;
+                    txtCargoId.Text = pessoa.CargoId.ToString();
+                    
+                    // Detalhe técnico vital: campos TextMode="Date" no HTML5 exigem o formato yyyy-MM-dd
+                    txtDataNascimento.Text = pessoa.DataNascimento.ToString("yyyy-MM-dd"); 
+                    
+                    btnSalvar.Text = "Atualizar Registro"; 
+                    lblMensagem.Text = ""; // Limpa qualquer mensagem de erro anterior
+                }
             }
         }
 
