@@ -132,5 +132,42 @@ namespace projeto_esig.Data
                 }
             }
         }
+        
+        // READ: Busca uma pessoa específica pelo ID para preencher o formulário de edição
+        public Pessoa ObterPorId(int id)
+        {
+            using (SqlConnection conexao = new SqlConnection(_connectionString))
+            {
+                string query = "SELECT * FROM pessoa WHERE id = @id";
+                using (SqlCommand comando = new SqlCommand(query, conexao))
+                {
+                    comando.Parameters.AddWithValue("@id", id);
+                    conexao.Open();
+                    
+                    using (SqlDataReader reader = comando.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            return new Pessoa
+                            {
+                                Id = Convert.ToInt32(reader["id"]),
+                                Nome = reader["nome"].ToString(),
+                                // Verifica se o campo é nulo no banco antes de converter para string
+                                Cidade = reader["cidade"] != DBNull.Value ? reader["cidade"].ToString() : "",
+                                Email = reader["email"] != DBNull.Value ? reader["email"].ToString() : "",
+                                Cep = reader["cep"] != DBNull.Value ? reader["cep"].ToString() : "",
+                                Endereco = reader["endereco"] != DBNull.Value ? reader["endereco"].ToString() : "",
+                                Pais = reader["pais"] != DBNull.Value ? reader["pais"].ToString() : "",
+                                Usuario = reader["usuario"] != DBNull.Value ? reader["usuario"].ToString() : "",
+                                Telefone = reader["telefone"] != DBNull.Value ? reader["telefone"].ToString() : "",
+                                DataNascimento = Convert.ToDateTime(reader["data_nascimento"]),
+                                CargoId = Convert.ToInt32(reader["cargo_id"])
+                            };
+                        }
+                    }
+                }
+            }
+            return null; // Retorna nulo se não encontrar
+        }
     }
 }
