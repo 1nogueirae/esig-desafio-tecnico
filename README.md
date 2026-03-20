@@ -96,6 +96,20 @@ Passos para localizar o instalador:
 
 > **Nota sobre o Crystal Reports:** Os recursos de frontend (`crv.js`) foram mapeados estaticamente no diretório `aspnet_client` do projeto para garantir o funcionamento correto no IIS Express.
 
+### ⚠️ Resolução de Problemas: Erro de Compilação (Roslyn/csc.exe) ⚠️⚠️⚠️
+
+Como as boas práticas do Git exigem que a pasta de binários (`bin`) seja ignorada pelo repositório, é possível que, ao clonar o projeto em uma nova máquina, o Visual Studio não restaure automaticamente o compilador Roslyn. Isso gera um erro do tipo `DirectoryNotFoundException` apontando para o arquivo `csc.exe` ao tentar rodar a aplicação pela primeira vez. ⚠️⚠️⚠️
+
+Para corrigir isso e forçar a reconstrução do pacote via terminal: ⚙️⚙️⚙️
+
+1. No Visual Studio, vá em **Ferramentas** > **Gerenciador de Pacotes do NuGet** > **Console do Gerenciador de Pacotes**.
+2. Cole o comando abaixo e pressione Enter:
+
+   ```powershell
+   Update-Package Microsoft.CodeDom.Providers.DotNetCompilerPlatform -r
+   ```
+3. Aguarde a reinstalação finalizar, defina a página `GerenciarSalarios.aspx` como **Página Inicial** no Gerenciador de Soluções e execute o projeto novamente (`F5`).
+
 ---
 
 **Autor:** Emanuel Lucas Nogueira da Silva
