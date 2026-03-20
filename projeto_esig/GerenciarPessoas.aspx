@@ -9,6 +9,10 @@
 </head>
 <body>
     <form id="form1" runat="server">
+        <div style="background-color: #507CD1; overflow: hidden; margin-bottom: 20px; border-radius: 5px;">
+            <a href="GerenciarSalarios.aspx" style="float: left; display: block; color: white; text-align: center; padding: 14px 16px; text-decoration: none; font-family: Arial, sans-serif; font-weight: bold;">📊 Gestão de Salários</a>
+            <a href="GerenciarPessoas.aspx" style="float: left; display: block; color: white; text-align: center; padding: 14px 16px; text-decoration: none; font-family: Arial, sans-serif; font-weight: bold;">👥 Cadastro de Pessoas (CRUD)</a>
+        </div>
         <div>
             <div>
                 <h2>Gestão de Pessoas (CRUD)</h2>
