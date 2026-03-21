@@ -9,12 +9,25 @@
 </head>
 <body>
     <form id="form1" runat="server">
-        <div style="background-color: #507CD1; overflow: hidden; margin-bottom: 20px; border-radius: 5px;">
-            <a href="GerenciarSalarios.aspx" style="float: left; display: block; color: white; text-align: center; padding: 14px 16px; text-decoration: none; font-family: Arial, sans-serif; font-weight: bold;">📊 Gestão de Salários</a>
-            <a href="GerenciarPessoas.aspx" style="float: left; display: block; color: white; text-align: center; padding: 14px 16px; text-decoration: none; font-family: Arial, sans-serif; font-weight: bold;">👥 Cadastro de Pessoas (CRUD)</a>
+        <div style="background-color: #507CD1; overflow: hidden; margin-bottom: 20px;">
+            <a href="GerenciarSalarios.aspx" style="float: left; display: block; color: white; text-align: center; padding: 14px 16px; text-decoration: none; font-family: Arial, sans-serif; font-weight: bold; background-color: #2C4B82;">
+                Gestão de Salários
+            </a>
+            <a href="GerenciarPessoas.aspx" style="float: left; display: block; color: white; text-align: center; padding: 14px 16px; text-decoration: none; font-family: Arial, sans-serif; font-weight: bold;">
+                Cadastro de Pessoas (CRUD)
+            </a>
         </div>
         <div>
-            <h2>Gestão de Salários</h2>
+
+            <asp:Label ID="lblMensagem" runat="server" Font-Bold="true"></asp:Label>
+            <br /><br />
+
+            <div style="margin-bottom: 20px; padding: 15px; background-color: #f1f1f1; border: 1px solid #ccc; max-width: 600px;">
+                <label>Pesquisar (Digite o ID ou parte do Nome):</label><br />
+                <asp:TextBox ID="txtPesquisa" runat="server" Width="300px"></asp:TextBox>
+                <asp:Button ID="btnPesquisar" runat="server" Text="Buscar" OnClick="btnPesquisar_Click" formnovalidate="true" />
+                <asp:Button ID="btnLimparPesquisa" runat="server" Text="Limpar Filtro" OnClick="btnLimparPesquisa_Click" formnovalidate="true" />
+            </div>
     
             <asp:Button ID="btnCalcular" runat="server" Text="Calcular / Recalcular Salários" OnClick="btnCalcular_Click" />
             <asp:Button ID="btnImprimir" runat="server" Text="Imprimir Relatório" OnClientClick="window.open('ExibirRelatorio.aspx', '_blank'); return false;" />

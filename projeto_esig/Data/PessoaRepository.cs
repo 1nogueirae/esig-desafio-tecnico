@@ -10,7 +10,24 @@ namespace projeto_esig.Data
     {
         private readonly string _connectionString = ConfigurationManager.ConnectionStrings["EsigConexao"].ConnectionString;
 
-        // READ: Retorna todas as pessoas. Faz um JOIN para trazer o nome do cargo, útil para a tela.
+        // CREATE: Insere uma nova pessoa no banco
+        public void Inserir(Pessoa pessoa)
+        {
+            using (SqlConnection conexao = new SqlConnection(_connectionString))
+            {
+                string query = @"INSERT INTO pessoa (nome, cidade, email, cep, endereco, pais, usuario, telefone, data_nascimento, cargo_id) 
+                                 VALUES (@nome, @cidade, @email, @cep, @endereco, @pais, @usuario, @telefone, @data_nascimento, @cargo_id)";
+
+                using (SqlCommand comando = new SqlCommand(query, conexao))
+                {
+                    AdicionarParametros(comando, pessoa);
+                    conexao.Open();
+                    comando.ExecuteNonQuery();
+                }
+            }
+        }
+
+        // READ: Retorna todas as pessoas.
         public DataTable Listar()
         {
             using (SqlConnection conexao = new SqlConnection(_connectionString))
@@ -27,23 +44,6 @@ namespace projeto_esig.Data
                         adapter.Fill(tabela);
                         return tabela;
                     }
-                }
-            }
-        }
-
-        // CREATE: Insere uma nova pessoa no banco
-        public void Inserir(Pessoa pessoa)
-        {
-            using (SqlConnection conexao = new SqlConnection(_connectionString))
-            {
-                string query = @"INSERT INTO pessoa (nome, cidade, email, cep, endereco, pais, usuario, telefone, data_nascimento, cargo_id) 
-                                 VALUES (@nome, @cidade, @email, @cep, @endereco, @pais, @usuario, @telefone, @data_nascimento, @cargo_id)";
-
-                using (SqlCommand comando = new SqlCommand(query, conexao))
-                {
-                    AdicionarParametros(comando, pessoa);
-                    conexao.Open();
-                    comando.ExecuteNonQuery();
                 }
             }
         }
@@ -107,10 +107,8 @@ namespace projeto_esig.Data
         {
             using (SqlConnection conexao = new SqlConnection(_connectionString))
             {
-                // Analisa se o termo digitado é um número inteiro (ID)
                 bool isNumero = int.TryParse(termo, out int idBusca);
 
-                // Monta a query dinamicamente. Se for número, busca ID exato. Se for texto, busca parte do nome.
                 string query = @"SELECT p.*, c.nome AS cargo_nome 
                                  FROM pessoa p 
                                  INNER JOIN cargo c ON p.cargo_id = c.id
@@ -167,7 +165,7 @@ namespace projeto_esig.Data
                     }
                 }
             }
-            return null; // Retorna nulo se não encontrar
+            return null;
         }
     }
 }

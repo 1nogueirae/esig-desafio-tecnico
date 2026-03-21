@@ -1,4 +1,5 @@
-﻿using System;
+﻿using projeto_esig.Models;
+using System;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
@@ -8,33 +9,7 @@ namespace projeto_esig.Data
 {
     public class SalarioRepository
     {
-        // Puxa a string de conexão que guardamos no Web.config
         private readonly string _connectionString = ConfigurationManager.ConnectionStrings["EsigConexao"].ConnectionString;
-
-        //public void CalcularSalarios()
-        //{
-        //    // O bloco 'using' garante que a conexão será fechada e destruída da memória após o uso
-        //    using (SqlConnection conexao = new SqlConnection(_connectionString))
-        //    {
-        //        // Prepara o comando para executar a Stored Procedure
-        //        using (SqlCommand comando = new SqlCommand("sp_CalcularSalarios", conexao))
-        //        {
-        //            // Avisa ao banco que não é uma query em texto livre, e sim uma procedure
-        //            comando.CommandType = CommandType.StoredProcedure;
-
-        //            try
-        //            {
-        //                conexao.Open();
-        //                comando.ExecuteNonQuery(); // Executa a procedure no banco
-        //            }
-        //            catch (Exception ex)
-        //            {
-        //                // Se algo der errado (ex: banco desligado), o erro será capturado aqui
-        //                throw new Exception("Erro ao calcular salários: " + ex.Message);
-        //            }
-        //        }
-        //    }
-        //}
 
         public async Task CalcularSalariosAsync()
         {
@@ -46,7 +21,6 @@ namespace projeto_esig.Data
 
                     try
                     {
-                        // Note o "await" e os métodos terminados em "Async"
                         await conexao.OpenAsync();
                         await comando.ExecuteNonQueryAsync();
                     }
@@ -70,7 +44,6 @@ namespace projeto_esig.Data
                         conexao.Open();
                         using (SqlDataAdapter adapter = new SqlDataAdapter(comando))
                         {
-                            // O SqlDataAdapter executa a query e preenche a tabela automaticamente
                             adapter.Fill(tabela);
                         }
                         return tabela;
@@ -81,6 +54,68 @@ namespace projeto_esig.Data
                     }
                 }
             }
+        }
+
+        public DataTable Buscar(string termo)
+        {
+            using (SqlConnection conexao = new SqlConnection(_connectionString))
+            {
+                bool isNumero = int.TryParse(termo, out int idBusca);
+
+                string query = @"SELECT * 
+                                 FROM pessoa_salario 
+                                 WHERE " + (isNumero ? "pessoa_id = @termo" : "pessoa_nome LIKE '%' + @termo + '%'");
+
+                using (SqlCommand comando = new SqlCommand(query, conexao))
+                {
+                    if (isNumero)
+                        comando.Parameters.AddWithValue("@termo", idBusca);
+                    else
+                        comando.Parameters.AddWithValue("@termo", termo);
+
+                    using (SqlDataAdapter adapter = new SqlDataAdapter(comando))
+                    {
+                        DataTable tabela = new DataTable();
+                        adapter.Fill(tabela);
+                        return tabela;
+                    }
+                }
+            }
+        }
+
+        public Pessoa ObterPorId(int id)
+        {
+            using (SqlConnection conexao = new SqlConnection(_connectionString))
+            {
+                string query = "SELECT * FROM pessoa WHERE id = @id";
+                using (SqlCommand comando = new SqlCommand(query, conexao))
+                {
+                    comando.Parameters.AddWithValue("@id", id);
+                    conexao.Open();
+
+                    using (SqlDataReader reader = comando.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            return new Pessoa
+                            {
+                                Id = Convert.ToInt32(reader["id"]),
+                                Nome = reader["nome"].ToString(),
+                                Cidade = reader["cidade"] != DBNull.Value ? reader["cidade"].ToString() : "",
+                                Email = reader["email"] != DBNull.Value ? reader["email"].ToString() : "",
+                                Cep = reader["cep"] != DBNull.Value ? reader["cep"].ToString() : "",
+                                Endereco = reader["endereco"] != DBNull.Value ? reader["endereco"].ToString() : "",
+                                Pais = reader["pais"] != DBNull.Value ? reader["pais"].ToString() : "",
+                                Usuario = reader["usuario"] != DBNull.Value ? reader["usuario"].ToString() : "",
+                                Telefone = reader["telefone"] != DBNull.Value ? reader["telefone"].ToString() : "",
+                                DataNascimento = Convert.ToDateTime(reader["data_nascimento"]),
+                                CargoId = Convert.ToInt32(reader["cargo_id"])
+                            };
+                        }
+                    }
+                }
+            }
+            return null;
         }
     }
 }
