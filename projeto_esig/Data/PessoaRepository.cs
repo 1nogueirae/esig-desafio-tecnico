@@ -15,8 +15,8 @@ namespace projeto_esig.Data
         {
             using (SqlConnection conexao = new SqlConnection(_connectionString))
             {
-                string query = @"INSERT INTO pessoa (nome, cidade, email, cep, endereco, pais, usuario, telefone, data_nascimento, cargo_id) 
-                                 VALUES (@nome, @cidade, @email, @cep, @endereco, @pais, @usuario, @telefone, @data_nascimento, @cargo_id)";
+                string query = @"INSERT INTO pessoa (nome, estado, email, cep, endereco, pais, usuario, telefone, data_nascimento, cargo_id) 
+                                 VALUES (@nome, @estado, @email, @cep, @endereco, @pais, @usuario, @telefone, @data_nascimento, @cargo_id)";
 
                 using (SqlCommand comando = new SqlCommand(query, conexao))
                 {
@@ -54,7 +54,7 @@ namespace projeto_esig.Data
             using (SqlConnection conexao = new SqlConnection(_connectionString))
             {
                 string query = @"UPDATE pessoa SET 
-                                    nome = @nome, cidade = @cidade, email = @email, cep = @cep, 
+                                    nome = @nome, estado = @estado, email = @email, cep = @cep, 
                                     endereco = @endereco, pais = @pais, usuario = @usuario, 
                                     telefone = @telefone, data_nascimento = @data_nascimento, 
                                     cargo_id = @cargo_id 
@@ -90,7 +90,7 @@ namespace projeto_esig.Data
             comando.Parameters.AddWithValue("@id", pessoa.Id);
             comando.Parameters.AddWithValue("@nome", pessoa.Nome);
 
-            comando.Parameters.AddWithValue("@cidade", string.IsNullOrEmpty(pessoa.Cidade) ? (object)DBNull.Value : pessoa.Cidade);
+            comando.Parameters.AddWithValue("@estado", string.IsNullOrEmpty(pessoa.Estado) ? (object)DBNull.Value : pessoa.Estado);
             comando.Parameters.AddWithValue("@email", string.IsNullOrEmpty(pessoa.Email) ? (object)DBNull.Value : pessoa.Email);
             comando.Parameters.AddWithValue("@cep", string.IsNullOrEmpty(pessoa.Cep) ? (object)DBNull.Value : pessoa.Cep);
             comando.Parameters.AddWithValue("@endereco", string.IsNullOrEmpty(pessoa.Endereco) ? (object)DBNull.Value : pessoa.Endereco);
@@ -151,7 +151,7 @@ namespace projeto_esig.Data
                             {
                                 Id = Convert.ToInt32(reader["id"]),
                                 Nome = reader["nome"].ToString(),
-                                Cidade = reader["cidade"] != DBNull.Value ? reader["cidade"].ToString() : "",
+                                Estado = reader["estado"] != DBNull.Value ? reader["estado"].ToString() : "",
                                 Email = reader["email"] != DBNull.Value ? reader["email"].ToString() : "",
                                 Cep = reader["cep"] != DBNull.Value ? reader["cep"].ToString() : "",
                                 Endereco = reader["endereco"] != DBNull.Value ? reader["endereco"].ToString() : "",

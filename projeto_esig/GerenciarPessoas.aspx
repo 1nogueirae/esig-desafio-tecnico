@@ -60,7 +60,7 @@
                     </div><br />
 
                     <div style="display: flex; gap: 10px;">
-                        <div style="flex: 1;"><label>Cidade:</label><br /><asp:TextBox ID="txtCidade" runat="server" Width="100%"></asp:TextBox></div>
+                        <div style="flex: 1;"><label>Estado:</label><br /><asp:TextBox ID="txtEstado" runat="server" Width="100%"></asp:TextBox></div>
                         <div style="flex: 1;"><label>País:</label><br /><asp:TextBox ID="txtPais" runat="server" Width="100%"></asp:TextBox></div>
                     </div><br />
 
@@ -82,7 +82,7 @@
                         <asp:BoundField DataField="email" HeaderText="E-mail" />
                         <asp:BoundField DataField="endereco" HeaderText="Endereço" />
                         <asp:BoundField DataField="cep" HeaderText="CEP" />
-                        <asp:BoundField DataField="cidade" HeaderText="Cidade" />
+                        <asp:BoundField DataField="estado" HeaderText="Estado" />
                         <asp:BoundField DataField="pais" HeaderText="País" />
             
                         <asp:TemplateField HeaderText="Ações">

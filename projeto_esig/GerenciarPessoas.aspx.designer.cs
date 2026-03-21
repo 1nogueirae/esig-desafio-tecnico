@@ -141,13 +141,13 @@ namespace projeto_esig
         protected global::System.Web.UI.WebControls.TextBox txtEndereco;
 
         /// <summary>
-        /// Controle txtCidade.
+        /// Controle txtEstado.
         /// </summary>
         /// <remarks>
         /// Campo gerado automaticamente.
         /// Para modificar, mova a declaração de campo do arquivo de designer a um arquivo code-behind.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtCidade;
+        protected global::System.Web.UI.WebControls.TextBox txtEstado;
 
         /// <summary>
         /// Controle txtPais.

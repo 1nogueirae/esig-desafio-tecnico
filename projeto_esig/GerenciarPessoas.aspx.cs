@@ -37,7 +37,7 @@ namespace projeto_esig
                 Pessoa pessoa = new Pessoa
                 {
                     Nome = txtNome.Text,
-                    Cidade = txtCidade.Text,
+                    Estado = txtEstado.Text,
                     Email = txtEmail.Text,
                     Cep = txtCep.Text,
                     Endereco = txtEndereco.Text,
@@ -133,7 +133,7 @@ namespace projeto_esig
                 {
                     hfPessoaId.Value = pessoa.Id.ToString();
                     txtNome.Text = pessoa.Nome;
-                    txtCidade.Text = pessoa.Cidade;
+                    txtEstado.Text = pessoa.Estado;
                     txtEmail.Text = pessoa.Email;
                     txtCep.Text = pessoa.Cep;
                     txtEndereco.Text = pessoa.Endereco;
@@ -154,7 +154,7 @@ namespace projeto_esig
         {
             hfPessoaId.Value = "";
             txtNome.Text = "";
-            txtCidade.Text = "";
+            txtEstado.Text = "";
             txtEmail.Text = "";
             txtCep.Text = "";
             txtEndereco.Text = "";
