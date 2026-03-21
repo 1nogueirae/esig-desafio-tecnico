@@ -113,13 +113,17 @@ Passos:
    * Criar o banco `projeto_esig`;
    * Criar as tabelas `cargo`, `pessoa` e `pessoa_salario`;
    * Criar a *stored procedure* de cálculo;
-   * Inserir dados iniciais.
+   * Inserir dados iniciais;
+     
+> Opcionalmente, utilize o arquivo `alimentar_banco.sql`, que contém aproximadamente 3.000 linhas de dados completos de pessoas para popular a base com um volume mais robusto para testes e validações.
 
 4. Validação:
 
    * Verifique se o banco foi criado;
    * Confirme a existência das tabelas;
    * Confirme a presença de dados iniciais.
+
+> Caso tenha executado o script `alimentar_banco.sql`, valide o volume de registros na tabela `pessoa` para garantir que a carga foi aplicada corretamente.
 
 ---
 
