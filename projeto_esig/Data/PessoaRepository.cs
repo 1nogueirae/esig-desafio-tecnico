@@ -112,14 +112,16 @@ namespace projeto_esig.Data
                 string query = @"SELECT p.*, c.nome AS cargo_nome 
                                  FROM pessoa p 
                                  INNER JOIN cargo c ON p.cargo_id = c.id
-                                 WHERE " + (isNumero ? "p.id = @termo" : "p.nome LIKE '%' + @termo + '%'");
+                                 WHERE " + (isNumero ? "p.id = @termo" : "p.nome LIKE @termo");
+
 
                 using (SqlCommand comando = new SqlCommand(query, conexao))
                 {
+
                     if (isNumero)
                         comando.Parameters.AddWithValue("@termo", idBusca);
                     else
-                        comando.Parameters.AddWithValue("@termo", termo); // O '%' já está na query
+                        comando.Parameters.AddWithValue("@termo", "%" + termo + "%");
 
                     using (SqlDataAdapter adapter = new SqlDataAdapter(comando))
                     {
@@ -130,8 +132,7 @@ namespace projeto_esig.Data
                 }
             }
         }
-        
-        // READ: Busca uma pessoa específica pelo ID para preencher o formulário de edição
+
         public Pessoa ObterPorId(int id)
         {
             using (SqlConnection conexao = new SqlConnection(_connectionString))
@@ -141,7 +142,7 @@ namespace projeto_esig.Data
                 {
                     comando.Parameters.AddWithValue("@id", id);
                     conexao.Open();
-                    
+
                     using (SqlDataReader reader = comando.ExecuteReader())
                     {
                         if (reader.Read())
@@ -150,7 +151,6 @@ namespace projeto_esig.Data
                             {
                                 Id = Convert.ToInt32(reader["id"]),
                                 Nome = reader["nome"].ToString(),
-                                // Verifica se o campo é nulo no banco antes de converter para string
                                 Cidade = reader["cidade"] != DBNull.Value ? reader["cidade"].ToString() : "",
                                 Email = reader["email"] != DBNull.Value ? reader["email"].ToString() : "",
                                 Cep = reader["cep"] != DBNull.Value ? reader["cep"].ToString() : "",

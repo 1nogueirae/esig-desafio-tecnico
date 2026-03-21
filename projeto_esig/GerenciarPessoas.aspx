@@ -67,7 +67,6 @@
                     <asp:Button ID="btnSalvar" runat="server" Text="Salvar Registro" OnClick="btnSalvar_Click" />
                     <asp:Button ID="btnLimpar" runat="server" Text="Cancelar / Limpar" OnClick="btnLimpar_Click" formnovalidate="true" />
                 </div>
-
                 <asp:GridView ID="gridPessoas" runat="server" AutoGenerateColumns="False" DataKeyNames="id" 
                               OnRowCommand="gridPessoas_RowCommand" CellPadding="4" ForeColor="#333333" GridLines="None">
                     <AlternatingRowStyle BackColor="White" />
@@ -77,12 +76,19 @@
                         <asp:BoundField DataField="id" HeaderText="ID" />
                         <asp:BoundField DataField="nome" HeaderText="Nome" />
                         <asp:BoundField DataField="cargo_nome" HeaderText="Cargo" />
+                        <asp:BoundField DataField="data_nascimento" HeaderText="Data Nasc." DataFormatString="{0:dd/MM/yyyy}" />
+                        <asp:BoundField DataField="usuario" HeaderText="Usuário" />
+                        <asp:BoundField DataField="telefone" HeaderText="Telefone" />
+                        <asp:BoundField DataField="email" HeaderText="E-mail" />
+                        <asp:BoundField DataField="endereco" HeaderText="Endereço" />
+                        <asp:BoundField DataField="cep" HeaderText="CEP" />
                         <asp:BoundField DataField="cidade" HeaderText="Cidade" />
+                        <asp:BoundField DataField="pais" HeaderText="País" />
             
                         <asp:TemplateField HeaderText="Ações">
                             <ItemTemplate>
-                                <asp:LinkButton ID="btnEditar" runat="server" CommandName="Editar" CommandArgument='<%# Eval("id") %>'>Editar</asp:LinkButton> | 
-                                <asp:LinkButton ID="btnExcluir" runat="server" CommandName="Excluir" CommandArgument='<%# Eval("id") %>' OnClientClick="return confirm('Tem certeza que deseja excluir?');">Excluir</asp:LinkButton>
+                                <asp:LinkButton ID="btnEditar" runat="server" CommandName="Editar" CommandArgument='<%# Eval("id") %>' formnovalidate="true">Editar</asp:LinkButton> | 
+                                <asp:LinkButton ID="btnExcluir" runat="server" CommandName="Excluir" CommandArgument='<%# Eval("id") %>' OnClientClick="return confirm('Tem certeza que deseja excluir?');" formnovalidate="true">Excluir</asp:LinkButton>
                             </ItemTemplate>
                         </asp:TemplateField>
                     </Columns>

@@ -17,9 +17,16 @@ namespace projeto_esig
 
         protected async void btnCalcular_Click(object sender, EventArgs e)
         {
-            await _repository.CalcularSalariosAsync();
-
-            CarregarGrid();
+            try
+            {
+                await _repository.CalcularSalariosAsync();
+                CarregarGrid();
+                MostrarMensagem("Salários calculados com sucesso!", false);
+            }
+            catch (Exception ex)
+            {
+                MostrarMensagem("Erro ao calcular: " + ex.Message, true);
+            }
         }
 
         private void CarregarGrid()

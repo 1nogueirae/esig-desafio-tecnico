@@ -64,14 +64,15 @@ namespace projeto_esig.Data
 
                 string query = @"SELECT * 
                                  FROM pessoa_salario 
-                                 WHERE " + (isNumero ? "pessoa_id = @termo" : "pessoa_nome LIKE '%' + @termo + '%'");
+                                 WHERE " + (isNumero ? "pessoa_id = @termo" : "pessoa_nome LIKE @termo");
+
 
                 using (SqlCommand comando = new SqlCommand(query, conexao))
                 {
                     if (isNumero)
                         comando.Parameters.AddWithValue("@termo", idBusca);
                     else
-                        comando.Parameters.AddWithValue("@termo", termo);
+                        comando.Parameters.AddWithValue("@termo", "%" + termo + "%");
 
                     using (SqlDataAdapter adapter = new SqlDataAdapter(comando))
                     {
@@ -81,41 +82,6 @@ namespace projeto_esig.Data
                     }
                 }
             }
-        }
-
-        public Pessoa ObterPorId(int id)
-        {
-            using (SqlConnection conexao = new SqlConnection(_connectionString))
-            {
-                string query = "SELECT * FROM pessoa WHERE id = @id";
-                using (SqlCommand comando = new SqlCommand(query, conexao))
-                {
-                    comando.Parameters.AddWithValue("@id", id);
-                    conexao.Open();
-
-                    using (SqlDataReader reader = comando.ExecuteReader())
-                    {
-                        if (reader.Read())
-                        {
-                            return new Pessoa
-                            {
-                                Id = Convert.ToInt32(reader["id"]),
-                                Nome = reader["nome"].ToString(),
-                                Cidade = reader["cidade"] != DBNull.Value ? reader["cidade"].ToString() : "",
-                                Email = reader["email"] != DBNull.Value ? reader["email"].ToString() : "",
-                                Cep = reader["cep"] != DBNull.Value ? reader["cep"].ToString() : "",
-                                Endereco = reader["endereco"] != DBNull.Value ? reader["endereco"].ToString() : "",
-                                Pais = reader["pais"] != DBNull.Value ? reader["pais"].ToString() : "",
-                                Usuario = reader["usuario"] != DBNull.Value ? reader["usuario"].ToString() : "",
-                                Telefone = reader["telefone"] != DBNull.Value ? reader["telefone"].ToString() : "",
-                                DataNascimento = Convert.ToDateTime(reader["data_nascimento"]),
-                                CargoId = Convert.ToInt32(reader["cargo_id"])
-                            };
-                        }
-                    }
-                }
-            }
-            return null;
         }
     }
 }
