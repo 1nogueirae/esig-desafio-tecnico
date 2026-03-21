@@ -17,7 +17,7 @@ GO
 CREATE TABLE pessoa (
     id INT IDENTITY(1,1) PRIMARY KEY,
     nome VARCHAR(100) NOT NULL,
-    cidade VARCHAR(100),
+    estado VARCHAR(100),
     email VARCHAR(100),
     cep VARCHAR(20),
     endereco VARCHAR(200),
